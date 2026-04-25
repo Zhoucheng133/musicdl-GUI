@@ -17,7 +17,7 @@
         "height": 600,
         "center": true,
         "hiddenTitle": true,
-        "titleBarStyle": "Transparent",
+        "titleBarStyle": "Overlay",
         "resizable": false,
         "visible": false
       }
