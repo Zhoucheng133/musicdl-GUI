@@ -15,7 +15,7 @@
         <div>{{ item.artist }}</div>
         <div class="list_header_center">{{ item.duration }}</div>
         <div class="list_header_center">
-          <v-btn icon="mdi-download" variant="text" size="small"></v-btn>
+          <v-btn icon="mdi-download" variant="text" size="small" @click="downloadHandler(item)"></v-btn>
         </div>
       </div>
     </div>
@@ -34,13 +34,26 @@
       color="rgb(20, 118, 108)"
     ></v-progress-circular>
   </div>
+  <DownloadConfig ref="downloadConfigRef" :select-item="selectItem" />
 </template>
 
 <script lang="ts" setup>
 import "../styles/list.css";
-import Store from "../store/index";
+import Store, { ListItem } from "../store/index";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
+import DownloadConfig from "./DownloadConfig.vue";
+
 const store = Store();
+const downloadConfigRef=ref();
 let {list, loading} = storeToRefs(store);
+
+let selectItem = ref<ListItem | null>(null);
+
+function downloadHandler(item: ListItem) {
+  selectItem.value = item;
+  downloadConfigRef.value.showDialog();
+}
+
 
 </script>

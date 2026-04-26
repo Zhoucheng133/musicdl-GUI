@@ -13,7 +13,7 @@
       hide-details
       append-inner-icon="mdi-magnify"
       @click:append-inner="store.search"
-      @keyup.enter="store.search"
+      @keydown.enter="store.search"
     ></v-text-field>
     <v-btn icon="mdi-cog" variant="text" size="small"></v-btn>
   </div>

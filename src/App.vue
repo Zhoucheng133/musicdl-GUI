@@ -15,7 +15,9 @@ import TitleBar from './components/TitleBar.vue';
 import SearchBar from './components/SearchBar.vue';
 import List from './components/List.vue';
 import { useTheme } from 'vuetify';
+import Store from './store';
 const theme = useTheme()
+const store=Store();
 
 import { platform } from '@tauri-apps/plugin-os';
 const currentPlatform = platform();
@@ -23,6 +25,7 @@ const currentPlatform = platform();
 let isWindows = currentPlatform=='windows';
 
 onMounted(async ()=>{
+  store.init();
   const appWindow = getCurrentWindow()
   appWindow.show();
   const systemTheme = await appWindow.theme();

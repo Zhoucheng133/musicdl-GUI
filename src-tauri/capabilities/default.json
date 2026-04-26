@@ -11,6 +11,17 @@
     "core:window:allow-start-dragging",
     "opener:default",
     {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://*/*"
+        },
+        {
+          "url": "http://*/*"
+        }
+      ]
+    },
+    {
       "identifier": "shell:allow-execute",
       "allow": [
         {
@@ -27,6 +38,8 @@
     },
     "shell:default",
     "os:default",
-    "dialog:default"
+    "dialog:default",
+    "http:default",
+    "fs:default"
   ]
 }

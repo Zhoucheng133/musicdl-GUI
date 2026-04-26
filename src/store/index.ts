@@ -2,11 +2,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { message } from '@tauri-apps/plugin-dialog';
 import { Command } from '@tauri-apps/plugin-shell';
-
-export enum Page{
-  Home,
-  Settings,
-}
+import { invoke } from '@tauri-apps/api/core';
+import { downloadDir, homeDir } from "@tauri-apps/api/path";
 
 export class ListItem{
   constructor(
@@ -20,7 +17,6 @@ export class ListItem{
 }
 
 export default defineStore("index", ()=>{
-  const page=ref(Page.Home);
   const client=ref('NeteaseMusicClient');
   const keyword=ref('');
   const loading=ref(false);
@@ -30,11 +26,11 @@ export default defineStore("index", ()=>{
       return;
     }
     loading.value=true;
+    const home = await homeDir();
     const args=[
       "-keyword", keyword.value,
       "-client", client.value,
-      // 临时
-      "-workdir", "/Users/zhoucheng/musicdl",
+      "-workdir", home,
     ]
 
     const command = Command.sidecar('binaries/core', args, {
@@ -64,14 +60,33 @@ export default defineStore("index", ()=>{
     }
     loading.value=false;
   };
+  const pathCheck=async (path: string): Promise<boolean> =>{
+    return await invoke('path_check', { path });
+  }
+  const download=(item: ListItem)=>{
+    console.log(item);
+    
+  }
+  const downloadPath=ref('');
   const list=ref<ListItem[]>([]);
+  const encode=ref("mp3 (320k)");
+  const saveConfig=ref(false);
+
+  const init=async ()=>{
+    downloadPath.value=await downloadDir();
+  }
 
   return {
-    page,
     client,
     keyword,
     search,
     list,
-    loading
+    loading,
+    download,
+    downloadPath,
+    encode,
+    saveConfig,
+    pathCheck,
+    init
   };
 });
