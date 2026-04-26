@@ -39,6 +39,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <ProgressDialog ref="progressDialogRef" />
 </template>
 
 <script lang="ts" setup>
@@ -46,6 +47,7 @@ import { open } from '@tauri-apps/plugin-dialog';
 import Store from "../store/index";
 import { storeToRefs } from 'pinia';
 import { message } from '@tauri-apps/plugin-dialog';
+import ProgressDialog from './ProgressDialog.vue';
 import { ref } from 'vue';
 
 const store = Store();

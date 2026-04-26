@@ -21,6 +21,16 @@ export default defineStore("index", ()=>{
   const client=ref('NeteaseMusicClient');
   const keyword=ref('');
   const loading=ref(false);
+
+  const downloading = ref(false);
+  const converting = ref(false);
+  const downloadProgress = ref(0);
+  const downloadPath=ref('');
+  const list=ref<ListItem[]>([]);
+  const encode=ref("mp3 (320k)");
+  const saveConfig=ref(false);
+  const showProgressDialog=ref(false);
+
   const search=async ()=>{
     if(keyword.value.length === 0){
       await message('搜索关键词不能为空', { title: '无法搜索', kind: 'error' });
@@ -61,27 +71,34 @@ export default defineStore("index", ()=>{
     }
     loading.value=false;
   };
+
   const pathCheck=async (path: string): Promise<boolean> =>{
     return await invoke('path_check', { path });
   }
-  const downloading = ref(false);
-  const downloadProgress = ref(0);
+
   const download=async (item: ListItem)=>{
     downloadProgress.value=0;
     downloading.value=true;
+    showProgressDialog.value=true;
     
     const cleanUrl = item.url.split('?')[0];
     const ext=await extname(cleanUrl);
     let path=await join(downloadPath.value, `${item.artist} - ${item.name}.${ext}`);
 
-    fetchFile(item.url, path, ({progress, total: number})=>{
-      downloadProgress.value=progress/number;
-    })
+    try {
+      await fetchFile(item.url, path, ({progressTotal, total})=>{
+        downloadProgress.value=progressTotal/total;
+      })
+      downloading.value=false;
+      convert(item);
+    } catch (_) {
+      downloading.value=false;
+    }
   }
-  const downloadPath=ref('');
-  const list=ref<ListItem[]>([]);
-  const encode=ref("mp3 (320k)");
-  const saveConfig=ref(false);
+
+  const convert=(item: ListItem)=>{
+    showProgressDialog.value=false;
+  }
 
   const init=async ()=>{
     downloadPath.value=await downloadDir();
@@ -100,6 +117,8 @@ export default defineStore("index", ()=>{
     pathCheck,
     downloading,
     downloadProgress,
-    init
+    converting,
+    init,
+    showProgressDialog
   };
 });
