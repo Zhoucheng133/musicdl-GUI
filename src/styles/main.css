@@ -7,3 +7,18 @@ body{
     background-color: rgb(50, 50, 50);
   }
 }
+
+.app_content{
+  box-sizing: border-box;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-top: 5px;
+}
+
+.search_bar{
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}

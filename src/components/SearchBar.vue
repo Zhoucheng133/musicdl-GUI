@@ -1,0 +1,39 @@
+<template>
+  <div class="search_bar">
+    <v-select
+      :items="clients"
+      item-title="name"
+      item-value="value"
+      v-model="client"
+      hide-details
+    ></v-select>
+    <v-text-field
+      v-model="keyword"
+      label="搜索"
+      hide-details
+      append-inner-icon="mdi-magnify"
+      @click:append-inner="search"
+      @keyup.enter="search"
+    ></v-text-field>
+    <v-btn icon="mdi-cog" variant="text" size="small"></v-btn>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia';
+import Store from '../store';
+const store = Store();
+let {client, keyword}=storeToRefs(store);
+
+const search=()=>{
+  // TODO: 搜索
+}
+
+const clients=[
+  {name: '网易云', value: 'NeteaseMusicClient'},
+  {name: 'QQ音乐', value: 'QQMusicClient'},
+  {name: '酷我音乐', value: 'KuwoMusicClient'},
+  {name: '咪咕音乐', value: 'MiguMusicClient'},
+  {name: '千千音乐', value: 'QianqianMusicClient'},
+]
+</script>

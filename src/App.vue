@@ -1,11 +1,16 @@
 <template>
   <TitleBar v-if="!isWindows" />
+  <div class="app_content" :style="{'margin-top': isWindows ? '0' : '30px'}">
+    <!-- <v-text-field label="搜索"></v-text-field> -->
+    <SearchBar />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import TitleBar from './components/TitleBar.vue';
+import SearchBar from './components/SearchBar.vue';
 import { useTheme } from 'vuetify';
 const theme = useTheme()
 
