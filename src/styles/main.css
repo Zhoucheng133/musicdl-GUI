@@ -2,18 +2,25 @@ body{
   background-color: rgb(244, 251, 248);
 }
 
-@media (prefers-color-scheme: dark) {
-  body{
-    background-color: rgb(50, 50, 50);
-  }
-}
-
 .app_content{
   box-sizing: border-box;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 15px;
-  padding-top: 5px;
+  height: 100vh;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.content{
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .search_bar{
@@ -21,4 +28,16 @@ body{
   grid-template-columns: 200px 1fr auto;
   gap: 10px;
   align-items: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  body{
+    background-color: rgb(50, 50, 50);
+  }
+  .content{
+    background-color: rgb(30, 30, 30);
+  }
 }

@@ -12,8 +12,8 @@
       label="搜索"
       hide-details
       append-inner-icon="mdi-magnify"
-      @click:append-inner="search"
-      @keyup.enter="search"
+      @click:append-inner="store.search"
+      @keyup.enter="store.search"
     ></v-text-field>
     <v-btn icon="mdi-cog" variant="text" size="small"></v-btn>
   </div>
@@ -24,10 +24,6 @@ import { storeToRefs } from 'pinia';
 import Store from '../store';
 const store = Store();
 let {client, keyword}=storeToRefs(store);
-
-const search=()=>{
-  // TODO: 搜索
-}
 
 const clients=[
   {name: '网易云', value: 'NeteaseMusicClient'},

@@ -1,8 +1,10 @@
 <template>
   <TitleBar v-if="!isWindows" />
-  <div class="app_content" :style="{'margin-top': isWindows ? '0' : '30px'}">
-    <!-- <v-text-field label="搜索"></v-text-field> -->
+  <div class="app_content" :style="{'padding-top': isWindows ? '5px' : '35px'}">
     <SearchBar />
+    <div class="content">
+      <List />
+    </div>
   </div>
 </template>
 
@@ -11,6 +13,7 @@ import { onMounted } from 'vue';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import TitleBar from './components/TitleBar.vue';
 import SearchBar from './components/SearchBar.vue';
+import List from './components/List.vue';
 import { useTheme } from 'vuetify';
 const theme = useTheme()
 
