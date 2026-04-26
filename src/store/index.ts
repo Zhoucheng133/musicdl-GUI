@@ -3,7 +3,8 @@ import { ref } from "vue";
 import { message } from '@tauri-apps/plugin-dialog';
 import { Command } from '@tauri-apps/plugin-shell';
 import { invoke } from '@tauri-apps/api/core';
-import { downloadDir, homeDir } from "@tauri-apps/api/path";
+import { downloadDir, extname, homeDir, join } from "@tauri-apps/api/path";
+import { download as fetchFile } from '@tauri-apps/plugin-upload';
 
 export class ListItem{
   constructor(
@@ -63,9 +64,19 @@ export default defineStore("index", ()=>{
   const pathCheck=async (path: string): Promise<boolean> =>{
     return await invoke('path_check', { path });
   }
-  const download=(item: ListItem)=>{
-    console.log(item);
+  const downloading = ref(false);
+  const downloadProgress = ref(0);
+  const download=async (item: ListItem)=>{
+    downloadProgress.value=0;
+    downloading.value=true;
     
+    const cleanUrl = item.url.split('?')[0];
+    const ext=await extname(cleanUrl);
+    let path=await join(downloadPath.value, `${item.artist} - ${item.name}.${ext}`);
+
+    fetchFile(item.url, path, ({progress, total: number})=>{
+      downloadProgress.value=progress/number;
+    })
   }
   const downloadPath=ref('');
   const list=ref<ListItem[]>([]);
@@ -87,6 +98,8 @@ export default defineStore("index", ()=>{
     encode,
     saveConfig,
     pathCheck,
+    downloading,
+    downloadProgress,
     init
   };
 });
