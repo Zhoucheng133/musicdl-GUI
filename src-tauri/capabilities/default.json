@@ -40,6 +40,10 @@
     "os:default",
     "dialog:default",
     "http:default",
-    "fs:default"
+    "fs:default",
+    {
+      "identifier": "fs:allow-remove",
+      "allow": [{ "path": "**" }]
+    }
   ]
 }

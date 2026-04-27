@@ -5,6 +5,7 @@ import { Command } from '@tauri-apps/plugin-shell';
 import { invoke } from '@tauri-apps/api/core';
 import { downloadDir, extname, homeDir, join } from "@tauri-apps/api/path";
 import { listen } from "@tauri-apps/api/event";
+import { remove } from "@tauri-apps/plugin-fs";
 
 export class ListItem{
   constructor(
@@ -23,7 +24,6 @@ export default defineStore("index", ()=>{
   const loading=ref(false);
 
   const downloading = ref(false);
-  const converting = ref(false);
   const downloadProgress = ref(0);
   const downloadPath=ref('');
   const list=ref<ListItem[]>([]);
@@ -83,7 +83,8 @@ export default defineStore("index", ()=>{
     
     const cleanUrl = item.url.split('?')[0];
     const ext=await extname(cleanUrl);
-    let path=await join(downloadPath.value, `${item.artist} - ${item.name}.${ext}`);
+    // let path=await join(downloadPath.value, `${item.artist} - ${item.name}.${ext}`);
+    let path=await join(downloadPath.value, `temp.${ext}`);
 
     listen("download-progress", (event) => {
       const progress = event.payload as number;
@@ -91,7 +92,7 @@ export default defineStore("index", ()=>{
     });
 
     await invoke('download_file', { url: item.url, savePath: path });
-    convert(item);
+    convert(item, path);
   }
 
   const cancelDownload=async ()=>{
@@ -101,9 +102,56 @@ export default defineStore("index", ()=>{
     downloadProgress.value=0;
   }
 
-  const convert=(item: ListItem)=>{
+  const convert=async (item: ListItem, filePath: string)=>{
     downloading.value=false;
-    // TODO..
+    const args=[
+      "-y",
+      "-i", filePath,
+      "-i", item.cover,
+      '-map', '0:a',
+      '-map', '1:0',
+      '-metadata', `title=${item.name}`,
+      '-metadata', `artist=${item.artist}`,
+      '-metadata', `album=${item.album}`,
+      '-id3v2_version', '3',
+      '-metadata:s:v', 'title=Album cover',
+      '-metadata:s:v', 'comment=Cover (front)',
+    ];
+
+    switch (encode.value) {
+      case "mp3 (320k)":
+        args.push(
+          '-c:a', 'libmp3lame',
+          '-b:a', '320k',
+        );
+        break;
+      case "mp3 (192k)":
+        args.push(
+          '-c:a', 'libmp3lame',
+          '-b:a', '192k',
+        );
+        break;
+      case "mp3 (128k)":
+        args.push(
+          '-c:a', 'libmp3lame',
+          '-b:a', '128k',
+        );
+        break;
+      case "FLAC (原始)":
+        args.push(
+          '-c:a', 'copy',
+        );
+    }
+    let path=await join(downloadPath.value, `${item.artist} - ${item.name}.${encode.value.includes("FLAC")?"flac": "mp3"}`);
+    args.push(
+      path
+    )
+
+    const command = Command.sidecar('binaries/ffmpeg', args);
+    await command.execute();
+
+    await remove(filePath);
+
     showProgressDialog.value=false;
   }
 
@@ -124,7 +172,6 @@ export default defineStore("index", ()=>{
     pathCheck,
     downloading,
     downloadProgress,
-    converting,
     init,
     showProgressDialog,
     cancelDownload

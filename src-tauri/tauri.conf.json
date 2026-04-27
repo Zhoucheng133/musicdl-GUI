@@ -31,7 +31,8 @@
     "targets": "all",
     "publisher": "ZhouCheng",
     "externalBin": [
-      "binaries/core"
+      "binaries/core",
+      "binaries/ffmpeg"
     ],
     "icon": [
       "icons/32x32.png",
