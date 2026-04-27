@@ -11,7 +11,7 @@
       <div class="list_divider"></div>
       <div class="list_result_content" v-for="(item, index) in list" :key="index">
         <div class="list_header_center">{{ index+1 }}</div>
-        <div>{{ item.name }}</div>
+        <div class="list_name">{{ item.name }}</div>
         <div>{{ item.artist }}</div>
         <div class="list_header_center">{{ item.duration }}</div>
         <div class="list_header_center">
@@ -57,3 +57,12 @@ function downloadHandler(item: ListItem) {
 
 
 </script>
+
+<style scoped>
+.list_name{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>
