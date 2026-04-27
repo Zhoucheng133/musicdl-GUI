@@ -12,6 +12,7 @@
       label="搜索"
       hide-details
       append-inner-icon="mdi-magnify"
+      autocomplete="off"
       @click:append-inner="store.search"
       @keydown.enter="store.search"
     ></v-text-field>

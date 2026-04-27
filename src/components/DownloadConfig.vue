@@ -12,6 +12,7 @@
             hide-details
             v-model="downloadPath"
             :readonly="true"
+            autocomplete="off"
           ></v-text-field>
           <v-btn icon="mdi-folder-open" @click="selectDir" variant="text"></v-btn>
         </div>
