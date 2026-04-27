@@ -40,7 +40,6 @@
     "os:default",
     "dialog:default",
     "http:default",
-    "fs:default",
-    "upload:default"
+    "fs:default"
   ]
 }

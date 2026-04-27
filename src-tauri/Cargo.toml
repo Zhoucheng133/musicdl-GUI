@@ -27,5 +27,7 @@ tauri-plugin-os = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-http = "2"
 tauri-plugin-fs = "2"
-tauri-plugin-upload = "2"
+futures-util = "0.3.32"
+tokio = "1.52.1"
+reqwest = { version = "0.13.2", features = ["stream"] }
 

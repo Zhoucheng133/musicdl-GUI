@@ -16,7 +16,7 @@
         :indeterminate="true"
       ></v-progress-linear>
       <v-card-actions>
-        <v-btn text @click="cancelDownload">取消</v-btn>
+        <v-btn text @click="cancelDownload" :disabled="!downloading">取消</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -35,6 +35,6 @@ const progress=computed(()=>{
 })
 
 const cancelDownload=()=>{
-  // store.cancelDownload();
+  store.cancelDownload();
 }
 </script>

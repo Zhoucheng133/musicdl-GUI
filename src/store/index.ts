@@ -4,7 +4,7 @@ import { message } from '@tauri-apps/plugin-dialog';
 import { Command } from '@tauri-apps/plugin-shell';
 import { invoke } from '@tauri-apps/api/core';
 import { downloadDir, extname, homeDir, join } from "@tauri-apps/api/path";
-import { download as fetchFile } from '@tauri-apps/plugin-upload';
+import { listen } from "@tauri-apps/api/event";
 
 export class ListItem{
   constructor(
@@ -85,18 +85,25 @@ export default defineStore("index", ()=>{
     const ext=await extname(cleanUrl);
     let path=await join(downloadPath.value, `${item.artist} - ${item.name}.${ext}`);
 
-    try {
-      await fetchFile(item.url, path, ({progressTotal, total})=>{
-        downloadProgress.value=progressTotal/total;
-      })
-      downloading.value=false;
-      convert(item);
-    } catch (_) {
-      downloading.value=false;
-    }
+    listen("download-progress", (event) => {
+      const progress = event.payload as number;
+      downloadProgress.value=progress;
+    });
+
+    await invoke('download_file', { url: item.url, savePath: path });
+    convert(item);
+  }
+
+  const cancelDownload=async ()=>{
+    showProgressDialog.value=false;
+    await invoke("cancel_download");
+    downloading.value=false;
+    downloadProgress.value=0;
   }
 
   const convert=(item: ListItem)=>{
+    downloading.value=false;
+    // TODO..
     showProgressDialog.value=false;
   }
 
@@ -119,6 +126,7 @@ export default defineStore("index", ()=>{
     downloadProgress,
     converting,
     init,
-    showProgressDialog
+    showProgressDialog,
+    cancelDownload
   };
 });
