@@ -22,6 +22,7 @@
             :hide-details="true"
             :items="encodeList"
             v-model="encode"
+            @update:model-value="encodeChanged"
           ></v-select>
         </div>
         <div style="margin-top: 10px;">
@@ -54,7 +55,7 @@ import { ref } from 'vue';
 const store = Store();
 const encodeList=["FLAC (原始)", "mp3 (320k)", "mp3 (192k)", "mp3 (128k)"]
 
-let {downloadPath, encode, saveConfig} = storeToRefs(store);
+let { downloadPath, encode, saveConfig, noConfirm } = storeToRefs(store);
 
 const downloadDialog=ref(false);
 
@@ -64,9 +65,13 @@ async function saveConfigHandler(){
     if(!isExist){
       saveConfig.value = false;
       await message('下载路径不存在', { title: '无法记住当前配置', kind: 'error' });
+      return;
     }
+    localStorage.setItem("noConfirm", "true");
+    noConfirm.value = true;
   }else{
-    // TODO
+    localStorage.setItem("noConfirm", "false");
+    noConfirm.value = false;
   }
 }
 
@@ -82,7 +87,12 @@ async function selectDir(){
   });
   if(file!=null){
     downloadPath.value = file;
+    localStorage.setItem("downloadPath", file);
   }
+}
+
+function encodeChanged(){
+  localStorage.setItem("encode", encode.value);
 }
 
 function showDialog(){ 

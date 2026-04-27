@@ -30,6 +30,7 @@ export default defineStore("index", ()=>{
   const encode=ref("mp3 (320k)");
   const saveConfig=ref(false);
   const showProgressDialog=ref(false);
+  const noConfirm=ref(false);
 
   const search=async ()=>{
     if(keyword.value.length === 0){
@@ -89,7 +90,6 @@ export default defineStore("index", ()=>{
     
     const cleanUrl = item.url.split('?')[0];
     const ext=await extname(cleanUrl);
-    // let path=await join(downloadPath.value, `${item.artist} - ${item.name}.${ext}`);
     let path=await join(downloadPath.value, `temp.${ext}`);
 
     listen("download-progress", (event) => {
@@ -162,7 +162,9 @@ export default defineStore("index", ()=>{
   }
 
   const init=async ()=>{
-    downloadPath.value=await downloadDir();
+    downloadPath.value = localStorage.getItem("file") ?? await downloadDir();
+    encode.value = localStorage.getItem("encode") ?? "mp3 (320k)";
+    noConfirm.value = localStorage.getItem("noConfirm") === "true";
   }
 
   return {
@@ -180,6 +182,7 @@ export default defineStore("index", ()=>{
     downloadProgress,
     init,
     showProgressDialog,
-    cancelDownload
+    cancelDownload,
+    noConfirm,
   };
 });
