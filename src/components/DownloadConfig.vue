@@ -5,7 +5,7 @@
       prepend-icon="mdi-download"
       :title="`下载 ${props.selectItem?.name}`"
     >
-      <v-card-text style="padding-bottom: 0;">
+      <v-card-text>
         <div style="margin-top: 5px; display: flex; gap: 10px; align-items: center;">
           <v-text-field
             label="保存路径"
@@ -28,6 +28,7 @@
         <div style="margin-top: 10px;">
           <v-checkbox
             label="记住当前配置"
+            density="compact"
             :hide-details="true"
             v-model="saveConfig"
             @change="saveConfigHandler"
@@ -46,14 +47,13 @@
 
 <script lang="ts" setup>
 import { open } from '@tauri-apps/plugin-dialog';
-import Store from "../store/index";
+import Store, { encodeList } from "../store/index";
 import { storeToRefs } from 'pinia';
 import { message } from '@tauri-apps/plugin-dialog';
 import ProgressDialog from './ProgressDialog.vue';
 import { ref } from 'vue';
 
 const store = Store();
-const encodeList=["FLAC (原始)", "mp3 (320k)", "mp3 (192k)", "mp3 (128k)"]
 
 let { downloadPath, encode, saveConfig, noConfirm } = storeToRefs(store);
 

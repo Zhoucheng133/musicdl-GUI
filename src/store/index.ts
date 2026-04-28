@@ -18,6 +18,8 @@ export class ListItem{
   ){}
 }
 
+export const encodeList=["FLAC (原始)", "mp3 (320k)", "mp3 (192k)", "mp3 (128k)"];
+
 export default defineStore("index", ()=>{
   const client=ref('NeteaseMusicClient');
   const keyword=ref('');
