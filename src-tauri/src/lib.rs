@@ -103,9 +103,9 @@ pub fn run() {
                 let locale = "zh";
                 let (app_menu_name, quit_label, edit_label, copy_label, paste_label, select_all_label, undo_label, redo_label, window_label, minimize_label, fullscreen_label, about_label, hide_label) = 
                 if locale == "zh" {
-                    ("应用", "退出 toWebp", "编辑", "复制", "粘贴", "全选", "撤销", "重做", "窗口", "最小化", "进入全屏幕", "关于 toWebp", "隐藏 toWebp")
+                    ("应用", "退出 MusicDL", "编辑", "复制", "粘贴", "全选", "撤销", "重做", "窗口", "最小化", "进入全屏幕", "关于 MusicDL", "隐藏 MusicDL")
                 } else {
-                    ("App", "Quit toWebp", "Edit", "Copy", "Paste", "Select All", "Undo", "Redo", "Window", "Minimize", "Fullscreen", "About toWebp", "Hide toWebp")
+                    ("App", "Quit MusicDL", "Edit", "Copy", "Paste", "Select All", "Undo", "Redo", "Window", "Minimize", "Fullscreen", "About MusicDL", "Hide MusicDL")
                 };
                 
                 let app_menu = Submenu::with_items(
