@@ -40,5 +40,6 @@ const clients=[
   {name: '酷我音乐', value: 'KuwoMusicClient'},
   {name: '咪咕音乐', value: 'MiguMusicClient'},
   {name: '千千音乐', value: 'QianqianMusicClient'},
+  {name: '汽水音乐', value: 'SodaMusicClient'},
 ]
 </script>

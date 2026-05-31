@@ -79,7 +79,6 @@ export default defineStore("index", ()=>{
   }
 
   const download=async (item: ListItem)=>{
-
     if(!await pathCheck(downloadPath.value)){
       await message('下载目录不存在或没有权限', { title: '无法下载', kind: 'error' });
       return;
@@ -90,7 +89,12 @@ export default defineStore("index", ()=>{
     showProgressDialog.value=true;
     
     const cleanUrl = item.url.split('?')[0];
-    const ext=await extname(cleanUrl);
+    let ext = 'm4a';
+      try {
+      const detectedExt = await extname(cleanUrl);
+      if (detectedExt) ext = detectedExt;
+    } catch (e) {}
+    
     let path=await join(downloadPath.value, `temp.${ext}`);
 
     listen("download-progress", (event) => {
