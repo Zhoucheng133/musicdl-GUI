@@ -167,7 +167,7 @@ export default defineStore("index", ()=>{
   }
 
   const init=async ()=>{
-    downloadPath.value = localStorage.getItem("file") ?? await downloadDir();
+    downloadPath.value = localStorage.getItem("downloadPath") ?? await downloadDir();
     encode.value = localStorage.getItem("encode") ?? "mp3 (320k)";
     saveConfig.value = localStorage.getItem("saveConfig") === "true";
     workdir.value = localStorage.getItem("workdir") ?? await homeDir();
